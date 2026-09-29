@@ -8,7 +8,7 @@ const photoRoot = {
   main: "01_FOTOS_DSC_00896-02689/",
   groom: "02_FOTOS_DSC_06836-06890/",
   variants: "03_VARIANTES_PARA_REVISAR/",
-  previews: "._album_preview_assets/",
+  previews: "album_preview_assets/",
 };
 
 const previewMap = {
