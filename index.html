@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f1eb" />
+    <meta
+      name="description"
+      content="Álbum editorial digital de boda — portada, historia completa y cierre."
+    />
+    <title>Álbum editorial — Portada</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="album-reader" aria-label="Álbum editorial de boda">
+      <header class="reader-header" aria-hidden="true">
+        <p class="reader-kicker">ÁLBUM EDITORIAL <span>/</span> HISTORIA COMPLETA</p>
+        <p class="reader-status" id="readerStatus">PORTADA</p>
+      </header>
+
+      <section class="reader-stage" aria-live="polite">
+        <div class="spread-frame">
+          <div id="spreadMount" class="spread-mount"></div>
+        </div>
+        <button class="page-hotspot page-hotspot--prev" id="previousHotspot" type="button" aria-label="Pliego anterior"></button>
+        <button class="page-hotspot page-hotspot--next" id="nextHotspot" type="button" aria-label="Pliego siguiente"></button>
+      </section>
+
+      <footer class="reader-footer">
+        <button class="nav-button" id="previousButton" type="button" aria-label="Pliego anterior">
+          <span aria-hidden="true">←</span>
+          <span class="sr-only">Anterior</span>
+        </button>
+
+        <div class="reader-progress" aria-label="Progreso del álbum">
+          <span class="sr-only" id="progressCurrent">PORTADA</span>
+          <span class="progress-rule" aria-hidden="true"></span>
+          <span class="sr-only" id="progressTotal">42</span>
+        </div>
+
+        <button class="nav-button nav-button--next" id="nextButton" type="button" aria-label="Pliego siguiente">
+          <span class="sr-only">Siguiente</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </footer>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

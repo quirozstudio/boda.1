@@ -1,0 +1,1226 @@
+:root {
+  --ivory: #f4f1eb;
+  --paper: #faf8f4;
+  --charcoal: #262522;
+  --muted: #77736c;
+  --rule: rgba(38, 37, 34, 0.18);
+  --serif: "Playfair Display", Georgia, serif;
+  --sans: "DM Sans", Arial, sans-serif;
+  --reader-padding: clamp(1.25rem, 3.2vw, 3.5rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ivory);
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--ivory);
+  color: var(--charcoal);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+button {
+  color: inherit;
+  font: inherit;
+}
+
+.album-reader {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-height: 100svh;
+  padding: var(--reader-padding);
+}
+
+.reader-header,
+.reader-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 2.5rem;
+  position: fixed;
+  z-index: 20;
+  right: var(--reader-padding);
+  left: var(--reader-padding);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease;
+}
+
+.reader-header {
+  top: var(--reader-padding);
+}
+
+.reader-footer {
+  bottom: var(--reader-padding);
+}
+
+body.is-ui-visible .reader-header,
+body.is-ui-visible .reader-footer {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.reader-kicker,
+.reader-status,
+.reader-progress,
+.nav-button {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.reader-kicker span {
+  margin: 0 0.45rem;
+  color: var(--muted);
+}
+
+.reader-status {
+  color: var(--muted);
+}
+
+.reader-stage {
+  position: relative;
+  display: grid;
+  min-height: 0;
+  place-items: center;
+  padding: clamp(1.25rem, 4vh, 3.25rem) 0;
+}
+
+.spread-frame {
+  width: min(100%, 1450px);
+  height: min(78svh, 800px);
+}
+
+.spread-mount {
+  height: 100%;
+  min-height: 0;
+}
+
+.spread {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: 100%;
+  min-height: 0;
+  background: var(--paper);
+  opacity: 0;
+  transform: translateY(0.75rem);
+  transition: opacity 500ms ease, transform 700ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.spread::after {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(38, 37, 34, 0.11);
+  content: "";
+  pointer-events: none;
+}
+
+.spread.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.page--left {
+  border-right: 1px solid rgba(38, 37, 34, 0.05);
+}
+
+.page-number {
+  display: none;
+}
+
+.image-frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--ivory);
+}
+
+.image-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.image-frame--cover img {
+  object-fit: cover;
+}
+
+.image-frame--impact img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.photo-credit {
+  margin: 0;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+/* Spread 01 — calm opening */
+.spread-opening .page--left {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  padding: clamp(2rem, 5vw, 5rem) clamp(1.25rem, 3vw, 3rem) 2.5rem;
+}
+
+.opening-portrait {
+  width: min(92%, 560px);
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+}
+
+.opening-meta {
+  display: grid;
+  gap: 0.55rem;
+  padding-top: 1.5rem;
+  text-align: center;
+}
+
+.opening-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.65rem, 2.8vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.opening-line {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  margin: 0.2rem auto 0.25rem;
+  background: var(--charcoal);
+  opacity: 0.55;
+}
+
+.opening-meta p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.spread-opening .page--right {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.opening-detail {
+  width: min(54%, 390px);
+  aspect-ratio: 16 / 10;
+}
+
+/* Spread 02 — reveal of the dress */
+.spread-discovery .page--left {
+  display: block;
+  padding: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.discovery-hero {
+  width: 100%;
+  height: 72%;
+  aspect-ratio: auto;
+}
+
+.spread-discovery .page--right {
+  position: relative;
+  display: block;
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+.discovery-secondary {
+  position: absolute;
+  top: 15%;
+  right: 7%;
+  width: 76%;
+  aspect-ratio: 16 / 9;
+}
+
+.discovery-detail {
+  position: absolute;
+  bottom: 14%;
+  left: 12%;
+  width: 40%;
+  aspect-ratio: 16 / 10;
+}
+
+/* Spread 03 — emotion */
+.spread-emotion .page--left {
+  display: block;
+  padding: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.emotion-hero {
+  width: 92%;
+  height: 70%;
+  aspect-ratio: auto;
+}
+
+.spread-emotion .page--right {
+  position: relative;
+  display: block;
+  padding: clamp(2rem, 6vw, 6rem);
+}
+
+.emotion-counterpoint {
+  position: absolute;
+  top: 17%;
+  left: 7%;
+  width: min(48%, 300px);
+  height: 72%;
+}
+
+/* Cover and digital close */
+.cover-screen,
+.closing-screen,
+.spread-full-impact {
+  grid-template-columns: 1fr;
+}
+
+.cover-screen::after,
+.closing-screen::after {
+  display: none;
+}
+
+.cover-page,
+.closing-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cover-image,
+.full-impact-image {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.cover-image img {
+  object-position: center 45%;
+}
+
+.cover-meta {
+  position: absolute;
+  z-index: 2;
+  bottom: 9%;
+  left: 8%;
+  display: grid;
+  gap: 0.65rem;
+  color: var(--paper);
+  text-align: left;
+}
+
+.cover-meta p,
+.closing-page p {
+  margin: 0;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.cover-meta .cover-title,
+.closing-page .closing-names {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.4vw, 2.8rem);
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+
+.closing-page {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.full-impact-image img {
+  object-position: 52% center;
+}
+
+.exterior-impact .full-impact-image img {
+  object-position: 50% 52%;
+}
+
+/* Pages 07—36: reusable editorial compositions */
+.spread-groom .page--left,
+.spread-ceremony-end .page--left,
+.spread-portrait .page--left,
+.spread-intimacy .page--left,
+.spread-transfer .page--left,
+.spread-session-emotion .page--left,
+.spread-cocktail .page--left,
+.spread-bouquet .page--left {
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.groom-hero,
+.ceremony-end-hero,
+.portrait-hero,
+.intimacy-hero,
+.transfer-hero,
+.session-emotion-hero,
+.cocktail-hero,
+.bouquet-hero {
+  width: 100%;
+  height: 84%;
+  margin: 0;
+}
+
+.spread-groom .page--right,
+.spread-ceremony-end .page--right,
+.spread-portrait .page--right,
+.spread-intimacy .page--right,
+.spread-transfer .page--right,
+.spread-session-emotion .page--right,
+.spread-cocktail .page--right,
+.spread-banquet .page--right,
+.spread-bouquet .page--right,
+.spread-finale .page--left {
+  position: relative;
+  display: block;
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+.groom-secondary,
+.ceremony-end-detail,
+.portrait-secondary,
+.intimacy-detail,
+.transfer-secondary,
+.session-emotion-detail,
+.cocktail-secondary,
+.bouquet-secondary,
+.finale-intro,
+.finale-close,
+.banquet-detail,
+.banquet-energy,
+.bouquet-detail,
+.groom-detail,
+.transfer-detail,
+.cocktail-detail {
+  margin: 0;
+}
+
+.groom-secondary,
+.ceremony-end-detail,
+.portrait-secondary,
+.intimacy-detail,
+.transfer-secondary,
+.session-emotion-detail,
+.cocktail-secondary,
+.bouquet-secondary {
+  position: absolute;
+  top: 14%;
+  right: 9%;
+  width: 76%;
+  height: 52%;
+}
+
+.groom-detail,
+.transfer-detail,
+.cocktail-detail,
+.bouquet-detail {
+  position: absolute;
+  bottom: 12%;
+  left: 10%;
+  width: 42%;
+  height: 25%;
+}
+
+.spread-arrival .page,
+.spread-family .page {
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 3vw, 3rem);
+}
+
+.arrival-left,
+.arrival-right {
+  width: 100%;
+  height: 74%;
+  margin: 0;
+}
+
+.arrival-right {
+  width: 78%;
+  height: 62%;
+}
+
+.rings-hero {
+  width: 100%;
+  height: 72%;
+  margin: 0;
+}
+
+.spread-rings .page--left,
+.spread-rings .page--right {
+  padding: clamp(1.5rem, 4vw, 4rem);
+}
+
+.spread-rings .page--right {
+  position: relative;
+  display: block;
+}
+
+.rings-secondary {
+  position: absolute;
+  top: 12%;
+  right: 7%;
+  width: 78%;
+  height: 53%;
+  margin: 0;
+}
+
+.rings-detail {
+  position: absolute;
+  bottom: 12%;
+  left: 10%;
+  width: 40%;
+  height: 24%;
+  margin: 0;
+}
+
+.banquet-detail {
+  align-self: start;
+  width: 76%;
+  height: 30%;
+  margin: 15% auto 0;
+}
+
+.banquet-hero {
+  position: absolute;
+  top: 9%;
+  right: 8%;
+  width: 84%;
+  height: 65%;
+  margin: 0;
+}
+
+.banquet-energy {
+  position: absolute;
+  bottom: 8%;
+  left: 10%;
+  width: 48%;
+  height: 21%;
+}
+
+.finale-intro {
+  position: absolute;
+  top: 9%;
+  left: 7%;
+  width: 88%;
+  height: 61%;
+}
+
+.finale-close {
+  position: absolute;
+  right: 9%;
+  bottom: 9%;
+  width: 48%;
+  height: 24%;
+}
+
+.spread-finale .page--right {
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 3vw, 3rem);
+}
+
+.finale-last {
+  width: 100%;
+  height: 88%;
+  margin: 0;
+}
+
+/* Added editorial spreads: more family context, words and dance */
+.spread-family-extended .page--left,
+.spread-first-dance .page--left,
+.spread-speeches .page--left {
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.family-extended-primary,
+.first-dance-primary,
+.speeches-primary {
+  width: 100%;
+  height: 82%;
+  margin: 0;
+}
+
+.spread-family-extended .page--right,
+.spread-first-dance .page--right,
+.spread-speeches .page--right {
+  position: relative;
+  display: block;
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+.family-extended-secondary,
+.first-dance-secondary {
+  position: absolute;
+  top: 12%;
+  right: 8%;
+  width: 78%;
+  height: 52%;
+  margin: 0;
+}
+
+.family-extended-detail,
+.first-dance-detail {
+  position: absolute;
+  bottom: 11%;
+  left: 10%;
+  width: 44%;
+  height: 25%;
+  margin: 0;
+}
+
+.speeches-detail {
+  position: absolute;
+  top: 22%;
+  left: 12%;
+  width: 72%;
+  height: 48%;
+  margin: 0;
+}
+
+.spread-phrase {
+  position: absolute;
+  z-index: 4;
+  bottom: 2.5%;
+  left: 5%;
+  max-width: min(19rem, 34%);
+  margin: 0;
+  color: var(--charcoal);
+  font-family: var(--serif);
+  font-size: clamp(0.9rem, 1.35vw, 1.35rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+.spread-full-impact .spread-phrase {
+  color: var(--paper);
+  max-width: min(22rem, 34%);
+}
+
+.spread-family .spread-phrase,
+.spread-banquet .spread-phrase {
+  bottom: 2.5%;
+  left: 5%;
+}
+
+.spread-finale .spread-phrase {
+  bottom: 2.5%;
+  left: 5%;
+  max-width: 16rem;
+}
+
+.page-hotspot {
+  position: absolute;
+  z-index: 8;
+  top: 0;
+  bottom: 0;
+  width: 14%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.page-hotspot--prev {
+  left: 0;
+}
+
+.page-hotspot--next {
+  right: 0;
+}
+
+.page-hotspot:focus-visible {
+  outline: 1px solid rgba(38, 37, 34, 0.22);
+  outline-offset: -0.5rem;
+}
+
+.image-frame--upper-crop img {
+  object-fit: cover;
+  object-position: 50% 0%;
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 2.5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: color 250ms ease;
+}
+
+.nav-button:hover,
+.nav-button:focus-visible {
+  color: var(--muted);
+}
+
+.nav-button:disabled {
+  cursor: default;
+  opacity: 0.28;
+}
+
+.reader-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.progress-rule {
+  display: block;
+  width: clamp(3rem, 8vw, 7rem);
+  height: 1px;
+  background: var(--charcoal);
+  opacity: 0.25;
+}
+
+/* Reference mix: physical spread + editorial contact-sheet rhythm */
+.reference-album .reader-stage {
+  padding: clamp(1.5rem, 4vh, 3.75rem) 0;
+}
+
+.reference-album .spread-frame {
+  width: min(100%, 1480px);
+  height: min(82svh, 840px);
+  padding: clamp(0.35rem, 0.9vw, 0.8rem);
+}
+
+.reference-album .spread {
+  border: 1px solid rgba(38, 37, 34, 0.08);
+  background: #fffdf9;
+  box-shadow: 0 1.4rem 3.5rem rgba(38, 37, 34, 0.09);
+}
+
+.reference-album .spread::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0.45rem;
+  border: 1px solid rgba(38, 37, 34, 0.045);
+  content: "";
+  pointer-events: none;
+}
+
+.reference-album .spread::after {
+  width: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(38, 37, 34, 0.03),
+    rgba(38, 37, 34, 0.12),
+    rgba(255, 255, 255, 0.5),
+    rgba(38, 37, 34, 0.04)
+  );
+}
+
+.reference-album .page {
+  background: #fffdf9;
+}
+
+.reference-album .image-frame {
+  box-shadow: 0 0 0 1px rgba(38, 37, 34, 0.065);
+}
+
+.reference-album .image-frame--impact {
+  box-shadow: 0 0 0 1px rgba(38, 37, 34, 0.09);
+}
+
+.reference-album .spread-full-impact,
+.reference-album .cover-screen {
+  padding: clamp(0.25rem, 0.7vw, 0.65rem);
+}
+
+.reference-album .spread-full-impact::before,
+.reference-album .cover-screen::before {
+  inset: 0.7rem;
+}
+
+.reference-album .spread-family-extended .page--right,
+.reference-album .spread-cocktail .page--right,
+.reference-album .spread-banquet .page--right,
+.reference-album .spread-first-dance .page--right {
+  background: #f9f6f0;
+}
+
+.reference-album .spread-family-extended .family-extended-secondary,
+.reference-album .spread-first-dance .first-dance-secondary,
+.reference-album .spread-banquet .banquet-hero,
+.reference-album .spread-cocktail .cocktail-secondary {
+  width: 80%;
+  height: 55%;
+}
+
+.reference-album .spread-family-extended .family-extended-detail,
+.reference-album .spread-first-dance .first-dance-detail,
+.reference-album .spread-banquet .banquet-energy,
+.reference-album .spread-cocktail .cocktail-detail {
+  width: 46%;
+  height: 27%;
+}
+
+.reference-album .spread-phrase {
+  max-width: min(20rem, 36%);
+  font-size: clamp(0.88rem, 1.2vw, 1.2rem);
+}
+
+@media (max-width: 800px) {
+  .album-reader {
+    min-height: 100svh;
+    padding: 1rem;
+  }
+
+  .reader-header,
+  .reader-footer {
+    min-height: 2.8rem;
+    right: 1rem;
+    left: 1rem;
+  }
+
+  .reader-kicker,
+  .reader-status,
+  .reader-progress,
+  .nav-button {
+    font-size: 9px;
+  }
+
+  .reader-stage {
+    display: block;
+    overflow: auto;
+    padding: 1.25rem 0;
+  }
+
+  .page-hotspot {
+    display: none;
+  }
+
+  .spread::after {
+    display: none;
+  }
+
+  .spread-frame {
+    height: auto;
+  }
+
+  .reference-album .reader-stage {
+    padding: 1.25rem 0;
+  }
+
+  .reference-album .spread-frame {
+    width: 100%;
+    height: auto;
+    padding: 0;
+  }
+
+  .reference-album .spread {
+    border: 0;
+    box-shadow: 0 0.8rem 2rem rgba(38, 37, 34, 0.07);
+  }
+
+  .reference-album .spread::before {
+    inset: 0.35rem;
+  }
+
+  .reference-album .spread-full-impact,
+  .reference-album .cover-screen {
+    padding: 0.25rem;
+  }
+
+  .spread {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+  }
+
+  .page {
+    min-height: 68svh;
+  }
+
+  .page--left {
+    border-right: 0;
+    border-bottom: 1px solid rgba(38, 37, 34, 0.05);
+  }
+
+  .spread-opening .page--left {
+    min-height: 76svh;
+    padding: 2rem 1.25rem 2.8rem;
+  }
+
+  .opening-portrait {
+    width: min(76%, 330px);
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .opening-detail {
+    width: min(62%, 300px);
+  }
+
+  .spread-opening .page--right {
+    min-height: 48svh;
+  }
+
+  .spread-discovery .page--left {
+    min-height: 50svh;
+    padding: 1.25rem;
+  }
+
+  .discovery-hero {
+    width: 100%;
+    height: 65%;
+    aspect-ratio: auto;
+  }
+
+  .spread-discovery .page--right {
+    position: relative;
+    display: block;
+    min-height: 80svh;
+    padding: 2.8rem 1.25rem 3.4rem;
+  }
+
+  .discovery-secondary {
+    top: 13%;
+    right: 8%;
+    width: 76%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .discovery-detail {
+    bottom: 14%;
+    left: 12%;
+    width: 46%;
+    aspect-ratio: 16 / 10;
+  }
+
+  .spread-emotion .page--left {
+    min-height: 50svh;
+    padding: 1.25rem;
+  }
+
+  .emotion-hero {
+    width: 94%;
+    height: 65%;
+    aspect-ratio: auto;
+  }
+
+  .spread-emotion .page--right {
+    position: relative;
+    display: block;
+    min-height: 78svh;
+    padding: 3rem 1rem 4rem;
+  }
+
+  .emotion-counterpoint {
+    top: 16%;
+    left: 10%;
+    width: min(50%, 260px);
+    height: 64svh;
+  }
+
+  .cover-screen,
+  .closing-screen {
+    min-height: 88svh;
+  }
+
+  .cover-page,
+  .closing-page {
+    min-height: 88svh;
+  }
+
+  .cover-meta {
+    bottom: 10%;
+    left: 8%;
+  }
+
+  .cover-meta .cover-title,
+  .closing-page .closing-names {
+    font-size: clamp(1.25rem, 6vw, 2rem);
+  }
+
+  .spread-full-impact {
+    min-height: 78svh;
+  }
+
+  .full-impact-image {
+    min-height: 78svh;
+  }
+
+  .spread-groom .page--left,
+  .spread-ceremony-end .page--left,
+  .spread-portrait .page--left,
+  .spread-intimacy .page--left,
+  .spread-transfer .page--left,
+  .spread-session-emotion .page--left,
+  .spread-cocktail .page--left,
+  .spread-bouquet .page--left {
+    min-height: 64svh;
+    padding: 1.25rem;
+  }
+
+  .groom-hero,
+  .ceremony-end-hero,
+  .portrait-hero,
+  .intimacy-hero,
+  .transfer-hero,
+  .session-emotion-hero,
+  .cocktail-hero,
+  .bouquet-hero {
+    width: 100%;
+    height: 76%;
+  }
+
+  .spread-groom .page--right,
+  .spread-ceremony-end .page--right,
+  .spread-portrait .page--right,
+  .spread-intimacy .page--right,
+  .spread-transfer .page--right,
+  .spread-session-emotion .page--right,
+  .spread-cocktail .page--right,
+  .spread-bouquet .page--right,
+  .spread-finale .page--left {
+    min-height: 82svh;
+    padding: 2.5rem 1.25rem 3.5rem;
+  }
+
+  .groom-secondary,
+  .ceremony-end-detail,
+  .portrait-secondary,
+  .intimacy-detail,
+  .transfer-secondary,
+  .session-emotion-detail,
+  .cocktail-secondary,
+  .bouquet-secondary {
+    top: 12%;
+    right: 8%;
+    width: 78%;
+    height: 48%;
+  }
+
+  .groom-detail,
+  .transfer-detail,
+  .cocktail-detail,
+  .bouquet-detail {
+    bottom: 12%;
+    left: 12%;
+    width: 48%;
+    height: 24%;
+  }
+
+  .spread-arrival .page,
+  .spread-family .page {
+    min-height: 64svh;
+    padding: 1.25rem;
+  }
+
+  .spread-family-extended .page--left,
+  .spread-first-dance .page--left,
+  .spread-speeches .page--left {
+    min-height: 64svh;
+    padding: 1.25rem;
+  }
+
+  .family-extended-primary,
+  .first-dance-primary,
+  .speeches-primary {
+    width: 100%;
+    height: 76%;
+  }
+
+  .spread-family-extended .page--right,
+  .spread-first-dance .page--right,
+  .spread-speeches .page--right {
+    min-height: 82svh;
+    padding: 2.5rem 1.25rem 3.5rem;
+  }
+
+  .family-extended-secondary,
+  .first-dance-secondary {
+    top: 12%;
+    right: 8%;
+    width: 78%;
+    height: 48%;
+  }
+
+  .family-extended-detail,
+  .first-dance-detail {
+    bottom: 12%;
+    left: 12%;
+    width: 48%;
+    height: 24%;
+  }
+
+  .speeches-detail {
+    top: 18%;
+    left: 10%;
+    width: 80%;
+    height: 48%;
+  }
+
+  .arrival-left,
+  .arrival-right {
+    width: 100%;
+    height: 72%;
+  }
+
+  .arrival-right {
+    width: 84%;
+    height: 64%;
+  }
+
+  .spread-rings .page--left,
+  .spread-rings .page--right {
+    min-height: 72svh;
+    padding: 1.25rem;
+  }
+
+  .rings-hero {
+    width: 100%;
+    height: 72%;
+  }
+
+  .rings-secondary {
+    top: 12%;
+    right: 8%;
+    width: 78%;
+    height: 48%;
+  }
+
+  .rings-detail {
+    bottom: 12%;
+    left: 12%;
+    width: 46%;
+    height: 24%;
+  }
+
+  .banquet-detail {
+    width: 80%;
+    height: 32%;
+    margin: 12% auto 0;
+  }
+
+  .spread-banquet .page--left {
+    min-height: 50svh;
+  }
+
+  .spread-banquet .page--right {
+    min-height: 82svh;
+    padding: 2.5rem 1.25rem 3.5rem;
+  }
+
+  .banquet-hero {
+    top: 9%;
+    right: 7%;
+    width: 86%;
+    height: 61%;
+  }
+
+  .banquet-energy {
+    bottom: 8%;
+    left: 10%;
+    width: 50%;
+    height: 22%;
+  }
+
+  .finale-intro {
+    top: 8%;
+    left: 6%;
+    width: 88%;
+    height: 58%;
+  }
+
+  .finale-close {
+    right: 8%;
+    bottom: 9%;
+    width: 52%;
+    height: 24%;
+  }
+
+  .spread-finale .page--right {
+    min-height: 82svh;
+    padding: 1.25rem;
+  }
+
+  .finale-last {
+    width: 100%;
+    height: 84%;
+  }
+
+  .spread-phrase {
+    bottom: 2.5%;
+    left: 5%;
+    max-width: 72%;
+    font-size: 0.95rem;
+  }
+
+  .spread-full-impact .spread-phrase {
+    max-width: 76%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
