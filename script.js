@@ -551,7 +551,7 @@ const nextButton = document.querySelector("#nextButton");
 const previousHotspot = document.querySelector("#previousHotspot");
 const nextHotspot = document.querySelector("#nextHotspot");
 
-const referenceMode = new URLSearchParams(window.location.search).has("reference");
+const referenceMode = !new URLSearchParams(window.location.search).has("classic");
 document.body.classList.toggle("reference-album", referenceMode);
 
 let currentSpread = 0;
