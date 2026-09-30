@@ -1,7 +1,7 @@
 const albumMeta = {
-  names: "NOMBRES DE LOS NOVIOS",
-  date: "FECHA",
-  place: "LUGAR",
+  names: "Kaoutar & Alberto",
+  date: "11 de octubre de 2025",
+  place: "Hotel Don Carlos",
 };
 
 const photoRoot = "album_preview_assets/";
