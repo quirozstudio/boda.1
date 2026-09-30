@@ -99,9 +99,9 @@
     { id: "33-34", range: "33—34", moment: "Banquete", progress: "33", layout: "detail-energy", photos: ["DSC02137.jpg", "DSC02225.jpg", "DSC02245.jpg"] },
     { id: "35-36", range: "35—36", moment: "Palabras", progress: "35", layout: "calm-sequence", phrase: "Algunas palabras se quedan para siempre.", photos: ["DSC02096.jpg", "DSC02356.jpg", "DSC02437.jpg"] },
     { id: "37-38", range: "37—38", moment: "Ramo y brindis", progress: "37", layout: "celebration-sequence", photos: ["DSC02280.jpg", "DSC02310.jpg", "DSC02462.jpg"] },
-    { id: "39-40", range: "39—40", moment: "Primer baile", progress: "39", layout: "dance-sequence", phrase: "Por un instante, el mundo bailó a su alrededor.", photos: ["DSC02481.jpg", "DSC02523.jpg", "DSC02538.jpg"] },
+    { id: "39-40", range: "39—40", moment: "Primer baile", progress: "39", layout: "dance-sequence", phrase: "Por un instante, el mundo bailó a su alrededor.", photos: ["DSC02481.jpg", "DSC02532 (1).jpg", "DSC02538.jpg"] },
     { id: "41-42", range: "41—42", moment: "Fiesta", progress: "41", layout: "facing-celebration", phrase: "Que nunca falte una razón para volver a bailar.", photos: ["DSC02563.jpg", "DSC02578.jpg"] },
-    { id: "closing", kind: "closing", moment: "Cierre", progress: "", layout: "closing", photos: ["DSC02532 (1).jpg"] },
+    { id: "closing", kind: "closing", moment: "Cierre", progress: "", layout: "closing", photos: ["DSC02523.jpg"] },
   ].map((spread) => Object.freeze({ ...spread, photos: Object.freeze(spread.photos) })));
 
   window.WEDDING_ALBUM_DATA = Object.freeze({

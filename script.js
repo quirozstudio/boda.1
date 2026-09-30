@@ -8,7 +8,8 @@ const albumMeta = albumData.meta;
 const interiorPageTotal = String(albumData.interiorPages);
 
 function pathToUrl(path) {
-  return path.split("/").map(encodeURIComponent).join("/");
+  const assetBase = document.documentElement.dataset.assetBase ?? "";
+  return `${assetBase}${path.split("/").map(encodeURIComponent).join("/")}`;
 }
 
 function imageFor(filename, alt, className = "") {
@@ -454,7 +455,7 @@ const pageTemplates = [
         </section>
         <section class="page page--right" aria-label="Página 40 — baile y emoción">
           <figure class="image-frame first-dance-secondary">
-            ${imageFor("DSC02523.jpg", "Baile emotivo de la novia con un familiar", "first-dance-secondary-image")}
+            ${imageFor("DSC02532 (1).jpg", "La novia bailando y sonriendo con una invitada", "first-dance-secondary-image")}
           </figure>
           <figure class="image-frame first-dance-detail">
             ${imageFor("DSC02538.jpg", "Los novios bailando juntos durante la fiesta", "first-dance-detail-image")}
@@ -491,7 +492,7 @@ const pageTemplates = [
       <article class="spread closing-screen" data-spread="closing">
         <section class="closing-page" aria-label="Cierre del álbum">
           <figure class="image-frame closing-image">
-            ${imageFor("DSC02532 (1).jpg", "La novia bailando y sonriendo con una invitada", "closing-image-element")}
+            ${imageFor("DSC02523.jpg", "Los novios abrazados y sonriendo durante la fiesta", "closing-image-element")}
           </figure>
           <div class="closing-meta">
             <p class="closing-names">${albumMeta.names}</p>
