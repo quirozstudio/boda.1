@@ -15,14 +15,11 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260930-3" />
+    <link rel="stylesheet" href="styles.css?v=20260930-final" />
   </head>
   <body>
     <main class="album-reader" aria-label="Álbum de boda de Kaoutar y Alberto">
-      <header class="reader-header" aria-hidden="true">
-        <p class="reader-kicker">ÁLBUM EDITORIAL <span>/</span> HISTORIA COMPLETA</p>
-        <p class="reader-status" id="readerStatus">PORTADA</p>
-      </header>
+      <p class="sr-only" id="readerStatus" aria-live="polite">Cubierta</p>
 
       <section class="reader-stage" aria-live="polite">
         <div class="spread-frame">
@@ -32,17 +29,14 @@
         <button class="page-hotspot page-hotspot--next" id="nextHotspot" type="button" aria-label="Pliego siguiente"></button>
       </section>
 
-      <footer class="reader-footer">
+      <footer class="reader-footer" aria-label="Navegación del álbum">
         <button class="nav-button" id="previousButton" type="button" aria-label="Pliego anterior">
           <span aria-hidden="true">←</span>
           <span class="sr-only">Anterior</span>
         </button>
 
-        <div class="reader-progress" aria-label="Progreso del álbum">
-          <span class="sr-only" id="progressCurrent">PORTADA</span>
-          <span class="progress-rule" aria-hidden="true"></span>
-          <span class="sr-only" id="progressTotal">42</span>
-        </div>
+        <span class="sr-only" id="progressCurrent">Cubierta</span>
+        <span class="sr-only" id="progressTotal">42</span>
 
         <button class="nav-button nav-button--next" id="nextButton" type="button" aria-label="Pliego siguiente">
           <span class="sr-only">Siguiente</span>
@@ -51,6 +45,7 @@
       </footer>
     </main>
 
-    <script src="script.js?v=20260930-5" defer></script>
+    <script src="album-data.js?v=20260930-final" defer></script>
+    <script src="script.js?v=20260930-final" defer></script>
   </body>
 </html>

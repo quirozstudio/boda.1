@@ -28,6 +28,7 @@ body {
   font-family: var(--sans);
   font-size: 12px;
   letter-spacing: 0.02em;
+  touch-action: pan-y;
 }
 
 .sr-only {
@@ -55,54 +56,23 @@ button {
   padding: var(--reader-padding);
 }
 
-.reader-header,
 .reader-footer {
   position: fixed;
   z-index: 30;
+  top: 50%;
   right: var(--reader-padding);
   left: var(--reader-padding);
   display: flex;
-  min-height: 2.5rem;
   align-items: center;
   justify-content: space-between;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 240ms ease;
+  transform: translateY(-50%);
+  transition: opacity 180ms ease;
 }
 
-.reader-header {
-  top: var(--reader-padding);
-}
-
-.reader-footer {
-  bottom: var(--reader-padding);
-}
-
-body.is-ui-visible .reader-header,
 body.is-ui-visible .reader-footer {
-  opacity: 0.72;
-  pointer-events: auto;
-}
-
-.reader-kicker,
-.reader-status,
-.reader-progress,
-.nav-button {
-  margin: 0;
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.reader-kicker span {
-  margin: 0 0.45rem;
-  color: var(--muted);
-}
-
-.reader-status {
-  color: var(--muted);
+  opacity: 0.38;
 }
 
 .reader-stage {
@@ -111,6 +81,8 @@ body.is-ui-visible .reader-footer {
   width: 100%;
   height: 100%;
   place-items: center;
+  overscroll-behavior-x: contain;
+  touch-action: pan-y;
 }
 
 .spread-frame {
@@ -267,36 +239,37 @@ body.is-ui-visible .reader-footer {
 }
 
 .closing-image {
-  top: 8%;
-  right: 7%;
-  width: 50%;
-  height: 84%;
+  top: 11%;
+  left: 6%;
+  width: 88%;
+  aspect-ratio: 16 / 9;
 }
 
 .closing-image img {
-  object-position: 50% 45%;
+  object-position: 50% 50%;
 }
 
 .closing-meta {
   position: absolute;
   z-index: 3;
-  top: 11%;
-  left: 8%;
+  bottom: 9%;
+  left: 7%;
   display: grid;
-  max-width: 36%;
+  max-width: 44%;
   gap: 0.55rem;
 }
 
 .closing-phrase {
   position: absolute;
-  bottom: 11%;
-  left: 8%;
-  max-width: 31%;
+  right: 7%;
+  bottom: 9%;
+  max-width: 34%;
   margin: 0;
   font-family: var(--serif);
   font-size: clamp(0.82rem, 1.05vw, 1.08rem);
   font-style: italic;
   line-height: 1.35;
+  text-align: right;
 }
 
 /* Pages 01—02 */
@@ -470,10 +443,14 @@ body.is-ui-visible .reader-footer {
 
 .ceremony-impact .full-impact-image img {
   object-position: 50% 48%;
+  transform: scale(1.06);
+  transform-origin: left center;
 }
 
 .exterior-impact .full-impact-image img {
   object-position: 50% 53%;
+  transform: scale(1.16);
+  transform-origin: left center;
 }
 
 /* Rings and signing */
@@ -587,17 +564,28 @@ body.is-ui-visible .reader-footer {
 }
 
 .session-walk {
-  top: 10%;
+  top: 8%;
   right: 7%;
-  width: 84%;
+  width: 70%;
   aspect-ratio: 16 / 9;
 }
 
 .session-close {
-  bottom: 10%;
+  bottom: 9%;
   left: 8%;
-  width: 54%;
+  width: 50%;
   aspect-ratio: 3 / 2;
+}
+
+.session-transition {
+  z-index: 2;
+  right: 8%;
+  bottom: 9%;
+  width: 26%;
+  aspect-ratio: 9 / 16;
+  box-shadow:
+    0 0 0 0.22rem var(--paper),
+    0 0 0 1px rgba(40, 39, 36, 0.06);
 }
 
 /* Family */
@@ -662,6 +650,117 @@ body.is-ui-visible .reader-footer {
   background: var(--paper-warm);
 }
 
+/* Deliberate rhythm changes across the social chapters */
+.spread-family-extended .family-extended-primary {
+  top: 15%;
+  left: 5%;
+  width: 90%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-family-extended .family-extended-secondary {
+  top: 10%;
+  right: 7%;
+  width: 74%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-family-extended .family-extended-detail {
+  bottom: 11%;
+  left: 12%;
+  width: 55%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-cocktail .cocktail-hero {
+  top: 22%;
+  left: 4%;
+  width: 92%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-cocktail .cocktail-secondary {
+  top: 8%;
+  right: 7%;
+  width: 86%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-cocktail .cocktail-detail {
+  bottom: 10%;
+  left: 9%;
+  width: 42%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-speeches .speeches-primary {
+  top: 12%;
+  left: 10%;
+  width: 80%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-speeches .speeches-secondary {
+  top: 12%;
+  right: 7%;
+  width: 72%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-speeches .speeches-detail {
+  right: 11%;
+  bottom: 13%;
+  left: auto;
+  width: 48%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-bouquet .bouquet-hero {
+  top: 9%;
+  left: 4%;
+  width: 92%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-bouquet .bouquet-secondary {
+  top: 11%;
+  right: auto;
+  left: 8%;
+  width: 58%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-bouquet .bouquet-detail {
+  right: 7%;
+  bottom: 10%;
+  left: auto;
+  width: 72%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-first-dance .first-dance-primary {
+  top: 11%;
+  left: 5%;
+  width: 90%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-first-dance .first-dance-secondary {
+  top: 10%;
+  right: auto;
+  left: 8%;
+  width: 56%;
+  aspect-ratio: 16 / 9;
+}
+
+.spread-first-dance .first-dance-detail {
+  right: 8%;
+  bottom: 10%;
+  left: auto;
+  width: 70%;
+  aspect-ratio: 16 / 9;
+}
+
 /* Banquet */
 .banquet-detail {
   top: 29%;
@@ -674,7 +773,7 @@ body.is-ui-visible .reader-footer {
   top: 9%;
   right: 7%;
   width: 84%;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 16 / 9;
 }
 
 .banquet-energy {
@@ -686,24 +785,17 @@ body.is-ui-visible .reader-footer {
 
 /* Finale */
 .finale-intro {
-  top: 8%;
-  left: 6%;
-  width: 88%;
-  aspect-ratio: 3 / 2;
-}
-
-.finale-close {
-  right: 7%;
-  bottom: 8%;
-  width: 52%;
+  top: 14%;
+  left: 4%;
+  width: 92%;
   aspect-ratio: 16 / 9;
 }
 
-.finale-last {
-  top: 17%;
-  left: 5%;
-  width: 90%;
-  aspect-ratio: 3 / 2;
+.finale-close {
+  top: 20%;
+  right: 4%;
+  width: 92%;
+  aspect-ratio: 16 / 9;
 }
 
 /* Editorial phrases */
@@ -767,13 +859,23 @@ body.is-ui-visible .reader-footer {
 
 .nav-button {
   display: inline-flex;
-  min-height: 2.5rem;
+  width: 2.5rem;
+  height: 3.5rem;
   align-items: center;
+  justify-content: center;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
-  transition: color 200ms ease;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  pointer-events: auto;
+  text-shadow: 0 1px 10px var(--ivory);
+  transition:
+    color 180ms ease,
+    opacity 180ms ease;
 }
 
 .nav-button:hover,
@@ -784,19 +886,6 @@ body.is-ui-visible .reader-footer {
 .nav-button:disabled {
   cursor: default;
   opacity: 0.25;
-}
-
-.reader-progress {
-  display: flex;
-  align-items: center;
-}
-
-.progress-rule {
-  display: block;
-  width: clamp(3rem, 7vw, 6rem);
-  height: 1px;
-  background: var(--charcoal);
-  opacity: 0.24;
 }
 
 @media (max-width: 800px) {
@@ -812,16 +901,30 @@ body.is-ui-visible .reader-footer {
     padding: 0.8rem;
   }
 
-  .reader-header,
   .reader-footer {
-    right: 0.8rem;
-    left: 0.8rem;
+    display: none;
   }
 
   .reader-stage {
     display: block;
     height: auto;
     padding: 0.8rem 0 3.5rem;
+  }
+
+  body.is-single-page .album-reader,
+  body.is-cinematic-spread .album-reader {
+    display: grid;
+    min-height: 100svh;
+    place-items: center;
+  }
+
+  body.is-single-page .reader-stage,
+  body.is-cinematic-spread .reader-stage {
+    display: grid;
+    width: 100%;
+    min-height: calc(100svh - 1.6rem);
+    padding: 0;
+    place-items: center;
   }
 
   .spread-frame {
@@ -870,28 +973,34 @@ body.is-ui-visible .reader-footer {
   }
 
   .closing-image {
-    top: 17%;
-    right: 8%;
-    width: 55%;
-    height: 72%;
+    top: 12%;
+    left: 6%;
+    width: 88%;
+    aspect-ratio: 16 / 9;
   }
 
   .closing-meta {
-    top: 8%;
+    top: auto;
+    bottom: 18%;
+    left: 7%;
+    max-width: 70%;
   }
 
   .closing-phrase {
-    bottom: 8%;
-    max-width: 34%;
+    right: auto;
+    bottom: 7%;
+    left: 7%;
+    max-width: 68%;
     font-size: 0.82rem;
+    text-align: left;
   }
 
   .spread-full-impact {
     display: grid;
     width: 100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;
     place-items: center;
-    padding: 7%;
+    padding: 4%;
   }
 
   .full-impact-image {
@@ -905,6 +1014,11 @@ body.is-ui-visible .reader-footer {
     max-width: 68%;
     color: var(--charcoal);
     text-shadow: none;
+  }
+
+  .ceremony-impact .full-impact-image img,
+  .exterior-impact .full-impact-image img {
+    transform: none;
   }
 
   .spread-phrase {
@@ -984,6 +1098,33 @@ body.is-ui-visible .reader-footer {
   .arrival-waiting {
     width: 29%;
     height: 47%;
+  }
+
+  .session-walk {
+    top: 7%;
+    right: 7%;
+    width: 86%;
+  }
+
+  .session-close {
+    bottom: 7%;
+    left: 7%;
+    width: 50%;
+  }
+
+  .session-transition {
+    right: 7%;
+    bottom: 7%;
+    width: 28%;
+  }
+
+  .finale-intro,
+  .finale-close {
+    top: 22%;
+    right: auto;
+    left: 4%;
+    width: 92%;
+    aspect-ratio: 16 / 9;
   }
 
   .page-hotspot {

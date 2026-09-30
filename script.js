@@ -1,19 +1,24 @@
-const albumMeta = {
-  names: "Kaoutar & Alberto",
-  date: "11 de octubre de 2025",
-  place: "Hotel Don Carlos",
-};
+const albumData = window.WEDDING_ALBUM_DATA;
 
-const photoRoot = "album_preview_assets/";
-const interiorPageTotal = "42";
-
-function imageFor(filename, alt, className = "") {
-  const preview = filename.replace(/\.jpg$/i, "-preview.jpg");
-  const src = `${photoRoot}${encodeURIComponent(preview).replace(/%2F/g, "/")}`;
-  return `<img class="${className}" src="${src}" data-source="${filename}" alt="${alt}" decoding="sync" />`;
+if (!albumData) {
+  throw new Error("No se pudo cargar la información del álbum.");
 }
 
-const pages = [
+const albumMeta = albumData.meta;
+const interiorPageTotal = String(albumData.interiorPages);
+
+function pathToUrl(path) {
+  return path.split("/").map(encodeURIComponent).join("/");
+}
+
+function imageFor(filename, alt, className = "") {
+  const photo = albumData.photos[filename];
+  if (!photo) throw new Error(`Fotografía no registrada en album-data.js: ${filename}`);
+
+  return `<img class="${className}" src="${pathToUrl(photo.preview)}" data-filename="${filename}" data-source="${photo.original}" alt="${alt}" loading="eager" decoding="async" />`;
+}
+
+const pageTemplates = [
   {
     kind: "cover",
     label: "PORTADA",
@@ -296,6 +301,9 @@ const pages = [
           <figure class="image-frame session-close">
             ${imageFor("DSC01738.jpg", "Retrato íntimo de los novios sentados", "session-close-image")}
           </figure>
+          <figure class="image-frame session-transition">
+            ${imageFor("DSC01797.jpg", "Los novios caminando juntos en blanco y negro", "session-transition-image")}
+          </figure>
         </section>
       </article>
     `,
@@ -462,17 +470,14 @@ const pages = [
     phrase: "Que nunca falte una razón para volver a bailar.",
     render: () => `
       <article class="spread spread-finale" data-spread="41-42">
-        <section class="page page--left" aria-label="Página 41 — fiesta y amigos">
+        <section class="page page--left" aria-label="Página 41 — baile y celebración">
           <figure class="image-frame finale-intro">
             ${imageFor("DSC02563.jpg", "La novia cantando y celebrando con sus amigas", "finale-intro-image")}
           </figure>
+        </section>
+        <section class="page page--right" aria-label="Página 42 — fiesta con amigos">
           <figure class="image-frame finale-close">
             ${imageFor("DSC02578.jpg", "Amigos celebrando juntos en el photocall", "finale-close-image")}
-          </figure>
-        </section>
-        <section class="page page--right" aria-label="Página 42 — cierre de la fiesta">
-          <figure class="image-frame finale-last">
-            ${imageFor("DSC02532 (1).jpg", "La novia bailando y sonriendo con una invitada", "finale-last-image")}
           </figure>
         </section>
       </article>
@@ -486,7 +491,7 @@ const pages = [
       <article class="spread closing-screen" data-spread="closing">
         <section class="closing-page" aria-label="Cierre del álbum">
           <figure class="image-frame closing-image">
-            ${imageFor("DSC01797.jpg", "Los novios alejándose juntos en blanco y negro", "closing-image-element")}
+            ${imageFor("DSC02532 (1).jpg", "La novia bailando y sonriendo con una invitada", "closing-image-element")}
           </figure>
           <div class="closing-meta">
             <p class="closing-names">${albumMeta.names}</p>
@@ -499,7 +504,30 @@ const pages = [
   },
 ];
 
+if (pageTemplates.length !== albumData.storyboard.length) {
+  throw new Error("El storyboard y las plantillas visuales no tienen la misma longitud.");
+}
+
+const pages = albumData.storyboard.map((story, index) => {
+  const template = pageTemplates[index];
+  const renderedFiles = [...template.render().matchAll(/data-filename="([^"]+)"/g)].map(
+    (match) => match[1],
+  );
+
+  if (renderedFiles.join("|") !== story.photos.join("|")) {
+    throw new Error(`Las fotografías del pliego ${story.id} no coinciden con el storyboard.`);
+  }
+
+  return {
+    ...template,
+    ...story,
+    label: story.moment,
+    phrase: story.phrase ?? "",
+  };
+});
+
 const spreadMount = document.querySelector("#spreadMount");
+const readerStage = document.querySelector(".reader-stage");
 const readerStatus = document.querySelector("#readerStatus");
 const progressCurrent = document.querySelector("#progressCurrent");
 const progressTotal = document.querySelector("#progressTotal");
@@ -508,15 +536,62 @@ const nextButton = document.querySelector("#nextButton");
 const previousHotspot = document.querySelector("#previousHotspot");
 const nextHotspot = document.querySelector("#nextHotspot");
 
-const referenceMode = !new URLSearchParams(window.location.search).has("classic");
-document.body.classList.toggle("reference-album", referenceMode);
-
 let currentSpread = 0;
+const preloadedPreviews = new Set();
+
+function preloadSpread(index) {
+  const spread = albumData.storyboard[index];
+  if (!spread) return;
+
+  spread.photos.forEach((filename) => {
+    const source = pathToUrl(albumData.photos[filename].preview);
+    if (preloadedPreviews.has(source)) return;
+    preloadedPreviews.add(source);
+
+    const preload = new Image();
+    preload.decoding = "async";
+    preload.src = source;
+  });
+}
+
+function waitForMedia(spread) {
+  const images = [...spread.querySelectorAll("img")];
+  const mediaReady = images.map(
+    (image) =>
+      new Promise((resolve) => {
+        const finish = () => {
+          if (typeof image.decode === "function" && image.naturalWidth) {
+            image.decode().catch(() => {}).finally(resolve);
+            return;
+          }
+          resolve();
+        };
+
+        if (image.complete) {
+          finish();
+          return;
+        }
+
+        image.addEventListener("load", finish, { once: true });
+        image.addEventListener("error", resolve, { once: true });
+      }),
+  );
+
+  return Promise.race([
+    Promise.allSettled(mediaReady),
+    new Promise((resolve) => window.setTimeout(resolve, 1800)),
+  ]);
+}
 
 function renderSpread(index, direction = 1) {
   const selected = pages[index];
   if (!selected) return;
 
+  document.body.classList.toggle(
+    "is-single-page",
+    selected.kind === "cover" || selected.kind === "closing",
+  );
+  document.body.classList.toggle("is-cinematic-spread", selected.layout === "double-page");
   spreadMount.innerHTML = selected.render();
   if (window.matchMedia("(max-width: 800px)").matches) {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -536,7 +611,11 @@ function renderSpread(index, direction = 1) {
   }
 
   spread.style.setProperty("--entry-offset", direction > 0 ? "0.65rem" : "-0.65rem");
-  requestAnimationFrame(() => requestAnimationFrame(() => spread.classList.add("is-visible")));
+  waitForMedia(spread).then(() => {
+    if (!spread.isConnected) return;
+    requestAnimationFrame(() => requestAnimationFrame(() => spread.classList.add("is-visible")));
+  });
+  preloadSpread(index + 1);
 }
 
 function moveSpread(direction) {
@@ -556,34 +635,65 @@ let controlsTimer;
 function revealControls() {
   document.body.classList.add("is-ui-visible");
   window.clearTimeout(controlsTimer);
-  controlsTimer = window.setTimeout(() => document.body.classList.remove("is-ui-visible"), 1700);
+  controlsTimer = window.setTimeout(() => document.body.classList.remove("is-ui-visible"), 1050);
 }
 
 window.addEventListener("keydown", (event) => {
+  if (!["ArrowLeft", "ArrowRight", " "].includes(event.key)) return;
+  event.preventDefault();
   revealControls();
   if (event.key === "ArrowLeft") moveSpread(-1);
   if (event.key === "ArrowRight" || event.key === " ") moveSpread(1);
 });
 
-let touchStartX = 0;
-window.addEventListener("mousemove", revealControls, { passive: true });
-window.addEventListener(
-  "touchstart",
+let pointerStartX = 0;
+let pointerStartY = 0;
+let isTrackingSwipe = false;
+window.addEventListener("pointermove", revealControls, { passive: true });
+document.addEventListener("mouseleave", () => document.body.classList.remove("is-ui-visible"));
+document.addEventListener("focusin", revealControls);
+readerStage.addEventListener(
+  "pointerdown",
   (event) => {
-    revealControls();
-    touchStartX = event.changedTouches[0].screenX;
+    if (!window.matchMedia("(max-width: 800px)").matches) return;
+    pointerStartX = event.screenX;
+    pointerStartY = event.screenY;
+    isTrackingSwipe = true;
   },
   { passive: true },
 );
 
 window.addEventListener(
-  "touchend",
+  "pointerup",
   (event) => {
-    const distance = event.changedTouches[0].screenX - touchStartX;
-    if (Math.abs(distance) < 45) return;
-    moveSpread(distance < 0 ? 1 : -1);
+    if (!isTrackingSwipe) return;
+    isTrackingSwipe = false;
+    const distanceX = event.screenX - pointerStartX;
+    const distanceY = event.screenY - pointerStartY;
+    if (Math.abs(distanceX) < 55 || Math.abs(distanceX) <= Math.abs(distanceY) * 1.15) return;
+    moveSpread(distanceX < 0 ? 1 : -1);
   },
   { passive: true },
+);
+window.addEventListener("pointercancel", () => {
+  isTrackingSwipe = false;
+});
+
+let wheelNavigationLocked = false;
+readerStage.addEventListener(
+  "wheel",
+  (event) => {
+    if (!window.matchMedia("(max-width: 800px)").matches || wheelNavigationLocked) return;
+    if (Math.abs(event.deltaX) < 45 || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+
+    event.preventDefault();
+    wheelNavigationLocked = true;
+    moveSpread(event.deltaX > 0 ? 1 : -1);
+    window.setTimeout(() => {
+      wheelNavigationLocked = false;
+    }, 450);
+  },
+  { passive: false },
 );
 
 renderSpread(currentSpread);

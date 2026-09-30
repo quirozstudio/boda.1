@@ -1,0 +1,120 @@
+// Fuente de verdad del álbum. La experiencia digital vive en script.js y styles.css.
+// Para impresión deben usarse siempre las rutas `original`; nunca los previews.
+(() => {
+  const originalFolders = Object.freeze({
+    main: "01_FOTOS_DSC_00896-02689",
+    groom: "02_FOTOS_DSC_06836-06890",
+    variants: "03_VARIANTES_PARA_REVISAR",
+  });
+
+  const previewFolder = "album_preview_assets";
+  const asset = (file, folder = originalFolders.main) => ({
+    file,
+    original: `${folder}/${file}`,
+    preview: `${previewFolder}/${file.replace(/\.jpg$/i, "-preview.jpg")}`,
+  });
+
+  const selectedAssets = [
+    asset("DSC01773.jpg"),
+    asset("DSC00913.jpg"),
+    asset("DSC00896.jpg"),
+    asset("DSC01068.jpg"),
+    asset("DSC01026.jpg"),
+    asset("DSC00939.jpg"),
+    asset("Copia de DSC01037.jpg", originalFolders.variants),
+    asset("DSC01080.jpg"),
+    asset("DSC06849.jpg", originalFolders.groom),
+    asset("DSC06838.jpg", originalFolders.groom),
+    asset("DSC06836.jpg", originalFolders.groom),
+    asset("DSC06864.jpg", originalFolders.groom),
+    asset("DSC01267.jpg"),
+    asset("DSC01223.jpg"),
+    asset("DSC01249.jpg"),
+    asset("DSC01325.jpg"),
+    asset("DSC01342.jpg"),
+    asset("DSC01348.jpg"),
+    asset("DSC01435.jpg"),
+    asset("DSC01480.jpg"),
+    asset("DSC01394.jpg"),
+    asset("DSC01522.jpg"),
+    asset("DSC01285.jpg"),
+    asset("DSC01528.jpg"),
+    asset("DSC01537.jpg"),
+    asset("DSC01747.jpg"),
+    asset("DSC01598.jpg"),
+    asset("DSC01675.jpg"),
+    asset("DSC01686.jpg"),
+    asset("DSC01703.jpg"),
+    asset("DSC01768.jpg"),
+    asset("DSC01785.jpg"),
+    asset("DSC01738.jpg"),
+    asset("DSC01797.jpg"),
+    asset("DSC01575.jpg"),
+    asset("DSC06869.jpg", originalFolders.groom),
+    asset("DSC01955.jpg"),
+    asset("DSC01926.jpg"),
+    asset("DSC02002.jpg"),
+    asset("DSC01919.jpg"),
+    asset("DSC02046.jpg"),
+    asset("DSC01896.jpg"),
+    asset("DSC02137.jpg"),
+    asset("DSC02225.jpg"),
+    asset("DSC02245.jpg"),
+    asset("DSC02096.jpg"),
+    asset("DSC02356.jpg"),
+    asset("DSC02437.jpg"),
+    asset("DSC02280.jpg"),
+    asset("DSC02310.jpg"),
+    asset("DSC02462.jpg"),
+    asset("DSC02481.jpg"),
+    asset("DSC02523.jpg"),
+    asset("DSC02538.jpg"),
+    asset("DSC02563.jpg"),
+    asset("DSC02578.jpg"),
+    asset("DSC02532 (1).jpg", originalFolders.variants),
+  ];
+
+  const photos = Object.freeze(
+    Object.fromEntries(selectedAssets.map((photo) => [photo.file, Object.freeze(photo)])),
+  );
+
+  const storyboard = Object.freeze([
+    { id: "cover", kind: "cover", moment: "Cubierta", progress: "", layout: "cover", photos: ["DSC01773.jpg"] },
+    { id: "01-02", range: "01—02", moment: "Apertura", progress: "01", layout: "opening", photos: ["DSC00913.jpg", "DSC00896.jpg"] },
+    { id: "03-04", range: "03—04", moment: "Revelación", progress: "03", layout: "asymmetric", photos: ["DSC01068.jpg", "DSC01026.jpg", "DSC00939.jpg"] },
+    { id: "05-06", range: "05—06", moment: "Emoción", progress: "05", layout: "hero-detail", photos: ["Copia de DSC01037.jpg", "DSC01080.jpg"] },
+    { id: "07-08", range: "07—08", moment: "Preparativos del novio", progress: "07", layout: "editorial-sequence", phrase: "Todo lo que estaba por suceder cabía en una mañana.", photos: ["DSC06849.jpg", "DSC06838.jpg", "DSC06836.jpg", "DSC06864.jpg"] },
+    { id: "09-10", range: "09—10", moment: "Llegada", progress: "09", layout: "vertical-sequence", photos: ["DSC01267.jpg", "DSC01223.jpg", "DSC01249.jpg"] },
+    { id: "11-12", range: "11—12", moment: "Ceremonia", progress: "11", layout: "double-page", phrase: "Frente a todos, comenzó lo esencial.", photos: ["DSC01325.jpg"] },
+    { id: "13-14", range: "13—14", moment: "Anillos y firma", progress: "13", layout: "sequence", photos: ["DSC01342.jpg", "DSC01348.jpg", "DSC01435.jpg"] },
+    { id: "15-16", range: "15—16", moment: "Final de ceremonia", progress: "15", layout: "hero-sequence", phrase: "Después de las promesas, llegó el abrazo.", photos: ["DSC01480.jpg", "DSC01394.jpg", "DSC01522.jpg"] },
+    { id: "17-18", range: "17—18", moment: "Retratos", progress: "17", layout: "facing-portraits", photos: ["DSC01285.jpg", "DSC01528.jpg"] },
+    { id: "19-20", range: "19—20", moment: "Intimidad", progress: "19", layout: "hero-detail", phrase: "Hay gestos que dicen más que cualquier palabra.", photos: ["DSC01537.jpg", "DSC01747.jpg"] },
+    { id: "21-22", range: "21—22", moment: "Traslado", progress: "21", layout: "hero-sequence", photos: ["DSC01598.jpg", "DSC01675.jpg", "DSC01686.jpg"] },
+    { id: "23-24", range: "23—24", moment: "Sesión exterior", progress: "23", layout: "double-page", phrase: "Fuera del ruido, solo quedaban ellos.", photos: ["DSC01703.jpg"] },
+    { id: "25-26", range: "25—26", moment: "Sesión emocional", progress: "25", layout: "editorial-sequence", photos: ["DSC01768.jpg", "DSC01785.jpg", "DSC01738.jpg", "DSC01797.jpg"] },
+    { id: "27-28", range: "27—28", moment: "Familia", progress: "27", layout: "facing-images", phrase: "El amor también es la gente que camina a nuestro lado.", photos: ["DSC01575.jpg", "DSC06869.jpg"] },
+    { id: "29-30", range: "29—30", moment: "Familia e invitados", progress: "29", layout: "social-sequence", photos: ["DSC01955.jpg", "DSC01926.jpg", "DSC02002.jpg"] },
+    { id: "31-32", range: "31—32", moment: "Cóctel", progress: "31", layout: "hero-details", phrase: "La alegría siempre encuentra un abrazo.", photos: ["DSC01919.jpg", "DSC02046.jpg", "DSC01896.jpg"] },
+    { id: "33-34", range: "33—34", moment: "Banquete", progress: "33", layout: "detail-energy", photos: ["DSC02137.jpg", "DSC02225.jpg", "DSC02245.jpg"] },
+    { id: "35-36", range: "35—36", moment: "Palabras", progress: "35", layout: "calm-sequence", phrase: "Algunas palabras se quedan para siempre.", photos: ["DSC02096.jpg", "DSC02356.jpg", "DSC02437.jpg"] },
+    { id: "37-38", range: "37—38", moment: "Ramo y brindis", progress: "37", layout: "celebration-sequence", photos: ["DSC02280.jpg", "DSC02310.jpg", "DSC02462.jpg"] },
+    { id: "39-40", range: "39—40", moment: "Primer baile", progress: "39", layout: "dance-sequence", phrase: "Por un instante, el mundo bailó a su alrededor.", photos: ["DSC02481.jpg", "DSC02523.jpg", "DSC02538.jpg"] },
+    { id: "41-42", range: "41—42", moment: "Fiesta", progress: "41", layout: "facing-celebration", phrase: "Que nunca falte una razón para volver a bailar.", photos: ["DSC02563.jpg", "DSC02578.jpg"] },
+    { id: "closing", kind: "closing", moment: "Cierre", progress: "", layout: "closing", photos: ["DSC02532 (1).jpg"] },
+  ].map((spread) => Object.freeze({ ...spread, photos: Object.freeze(spread.photos) })));
+
+  window.WEDDING_ALBUM_DATA = Object.freeze({
+    version: "2026-09-30-final",
+    meta: Object.freeze({
+      names: "Kaoutar & Alberto",
+      date: "11 de octubre de 2025",
+      place: "Hotel Don Carlos",
+    }),
+    interiorPages: 42,
+    originalFolders,
+    previewFolder,
+    photos,
+    storyboard,
+  });
+})();
